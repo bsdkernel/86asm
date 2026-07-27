@@ -5,7 +5,7 @@ void
 print_usage(char *argv[])
 {
 	printf("Usage: %s (source file) -o (output binary file)\n",
-																										argv[0]);
+		argv[0]);
 }
 
 int
@@ -16,6 +16,14 @@ main (int argc, char *argv[])
 			strcmp(argv[2], "-o") != 0) 
 	{
 		print_usage(argv);
+		return 1;
+	}
+
+	/* Check for the existence of the source file */
+	if (!file_exists(argv([1])))
+	{
+		printf("Error: file '%s' does not exist.\n",
+			argv[1]);
 		return 1;
 	}
 
