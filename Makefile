@@ -9,6 +9,6 @@ $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm -rf build
+	rm -rf build 86asm
 
 .PHONY: all clean
