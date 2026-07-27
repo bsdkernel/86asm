@@ -1,8 +1,25 @@
 #include <stdio.h>
+#include <string.h>
+
+void
+print_usage(char *argv[])
+{
+	printf("Usage: %s (source file) -o (output binary file)\n",
+																										argv[0]);
+}
 
 int
-main (void)
+main (int argc, char *argv[])
 {
-  printf("Hello, World!\n");
-  return 0;
+	/* Argument check */
+	if (argc != 4 ||
+			strcmp(argv[2], "-o") != 0) 
+	{
+		print_usage(argv);
+		return 1;
+	}
+
+	/* TODO */
+
+	return 0;
 }
