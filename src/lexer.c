@@ -12,6 +12,81 @@ lexer_init(Lexer *lexer,
 	lexer->column = 1;
 }
 
+static int
+is_digit_for_base(char c, int base)
+{
+	if (c >= '0' && c <= '9')
+		return (c - '0') < base;
+
+	if (base == 16 && c >= 'a' && c <= 'f')
+		return 1;
+
+	if (base == 16 && c >= 'A' && c <= 'F')
+		return 1;
+
+	return 0;
+}
+
+static Token
+lexer_read_number(Lexer *lexer)
+{
+	size_t start = lexer->position;
+	int base = 10;
+
+	Token token = {0};
+	token.start = lexer->source + start;
+
+	if (lexer->source[lexer->position] == '0')
+	{
+		char next = lexer->source[lexer->position + 1];
+
+		if (next == 'x' || next == 'X')
+		{
+			base = 16;
+			lexer->position += 2;
+		}
+		else if (next == 'b' || next == 'B')
+		{
+			base = 2;
+			lexer->position += 2;
+		}
+	}
+
+	size_t digits_start = lexer->position;
+
+	while (is_digit_for_base(lexer->source[lexer->position], base))
+	{
+		lexer->position++;
+	}
+
+	if (lexer->position == digits_start)
+	{
+		token.type = TOKEN_INVALID;
+		token.length = lexer->position - start;
+		return token;
+	}
+
+	char next = lexer->source[lexer->position];
+
+	if (isalnum((unsigned char)next) || next == '_')
+	{
+		while (isalnum((unsigned char)lexer->source[lexer->position]) ||
+		       lexer->source[lexer->position] == '_')
+		{
+			lexer->position++;
+		}
+
+		token.type = TOKEN_INVALID;
+		token.length = lexer->position - start;
+		return token;
+	}
+
+	token.type = TOKEN_NUMBER;
+	token.length = lexer->position - start;
+
+	return token;
+}
+
 /* Getting next token */
 Token
 lexer_next_token(Lexer *lexer)
@@ -101,20 +176,7 @@ lexer_next_token(Lexer *lexer)
 	}
 	else if (isdigit((unsigned char)current))
 	{
-    size_t start = lexer->position;
-
-    while (isdigit((unsigned char)current))
-    {
-        lexer->position++;
-        current = lexer->source[lexer->position];
-    }
-
-    Token token = {0};
-		token.type = TOKEN_NUMBER;
-		token.start = lexer->source + start;
-		token.length = lexer->position - start;
-
-		return token;
+		return lexer_read_number(lexer);
 	}
 
 	Token token = {0};
