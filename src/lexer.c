@@ -157,7 +157,7 @@ lexer_next_token(Lexer *lexer)
 		return token;
 	}
 	else if (isalpha((unsigned char)current) || current == '_')
-  {
+	{
 		size_t start = lexer->position;
 
 		while (isalnum((unsigned char)current) ||
