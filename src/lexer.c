@@ -194,6 +194,10 @@ lexer_next_token(Lexer *lexer)
 	{
 		return lexer_make_single_token(lexer, TOKEN_MINUS);
 	}
+	else if (current == '*')
+	{
+		return lexer_make_single_token(lexer, TOKEN_STAR);
+	}
 	else if (isalpha((unsigned char)current) || current == '_')
 	{
 		size_t start = lexer->position;

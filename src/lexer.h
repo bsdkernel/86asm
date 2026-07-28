@@ -1,9 +1,7 @@
 #pragma once
 
 /* Including libraries */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
+#include <stddef.h>
 
 /* Token type */
 typedef enum {
