@@ -87,6 +87,20 @@ lexer_read_number(Lexer *lexer)
 	return token;
 }
 
+static Token
+lexer_make_single_token(Lexer *lexer, TokenType type)
+{
+	Token token = {0};
+
+	token.type = type;
+	token.start = lexer->source + lexer->position;
+	token.length = 1;
+
+	lexer->position++;
+
+	return token;
+}
+
 /* Getting next token */
 Token
 lexer_next_token(Lexer *lexer)
@@ -156,6 +170,30 @@ lexer_next_token(Lexer *lexer)
 
 		return token;
 	}
+	else if (current == ',')
+	{
+		return lexer_make_single_token(lexer, TOKEN_COMMA);
+	}
+	else if (current == ':')
+	{
+		return lexer_make_single_token(lexer, TOKEN_COLON);
+	}
+	else if (current == '[')
+	{
+		return lexer_make_single_token(lexer, TOKEN_LBRACKET);
+	}
+	else if (current == ']')
+	{
+		return lexer_make_single_token(lexer, TOKEN_RBRACKET);
+	}
+	else if (current == '+')
+	{
+		return lexer_make_single_token(lexer, TOKEN_PLUS);
+	}
+	else if (current == '-')
+	{
+		return lexer_make_single_token(lexer, TOKEN_MINUS);
+	}
 	else if (isalpha((unsigned char)current) || current == '_')
 	{
 		size_t start = lexer->position;
@@ -179,12 +217,5 @@ lexer_next_token(Lexer *lexer)
 		return lexer_read_number(lexer);
 	}
 
-	Token token = {0};
-	token.type = TOKEN_INVALID;
-	token.start = lexer->source + lexer->position;
-	token.length = 1;
-
-	lexer->position++;
-
-	return token;
+	return lexer_make_single_token(lexer, TOKEN_INVALID);
 }

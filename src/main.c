@@ -101,6 +101,18 @@ token_type_name(TokenType type)
 	case TOKEN_INVALID:
 		return "TOKEN_INVALID";
 
+	case TOKEN_LBRACKET:
+		return "TOKEN_LBRACKET";
+
+	case TOKEN_RBRACKET:
+		return "TOKEN_RBRACKET";
+
+	case TOKEN_PLUS:
+		return "TOKEN_PLUS";
+
+	case TOKEN_MINUS:
+		return "TOKEN_MINUS";
+
 	default:
 		return "TOKEN_UNKNOWN";
 	}
