@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -O2
 
 TARGET = 86asm
-SRC = src/main.c
+SRC = src/main.c src/lexer.c
 
 $(TARGET): $(SRC)
 	mkdir -p build
