@@ -3,6 +3,7 @@
 /* Including libraries */
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 /* Token type */
 typedef enum {
@@ -26,8 +27,8 @@ typedef enum {
 typedef struct {
 	TokenType type;
 
-	char text[64]; // TODO: Remove fixed size
-	uint64_t num;
+	const char *start;
+	size_t length;
 } Token;
 
 /* Lexer */

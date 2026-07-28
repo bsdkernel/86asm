@@ -99,7 +99,20 @@ main (int argc, char *argv[])
 	char *source = read_file(argv[1]);
 	if (source == NULL) return 1;
 
-	/* TODO: Including Lexer */
+	Lexer lexer;
+	lexer_init(&lexer, source);
+
+	Token token;
+
+	do
+	{
+		token = lexer_next_token(&lexer);
+
+		printf("Type: %d, Text: %.*s\n",
+           token.type,
+           (int)token.length,
+           token.start);
+	} while (token.type != TOKEN_EOF);
 
 	free(source);
 
