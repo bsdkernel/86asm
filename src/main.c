@@ -17,7 +17,7 @@ file_exists(const char *path)
 		fclose(f);
 		return 1;
  	}
- 	return 0;
+	return 0;
 }
 
 int
