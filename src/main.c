@@ -77,6 +77,35 @@ char
 	return source;
 }
 
+/* TODO: DEBUG FUNCTION, PLS DELETE */
+const char *
+token_type_name(TokenType type)
+{
+	switch (type)
+	{
+	case TOKEN_IDENTIFIER:
+		return "TOKEN_IDENTIFIER";
+
+	case TOKEN_NUMBER:
+		return "TOKEN_NUMBER";
+
+	case TOKEN_COMMA:
+		return "TOKEN_COMMA";
+
+	case TOKEN_NEWLINE:
+		return "TOKEN_NEWLINE";
+
+	case TOKEN_EOF:
+		return "TOKEN_EOF";
+
+	case TOKEN_INVALID:
+		return "TOKEN_INVALID";
+
+	default:
+		return "TOKEN_UNKNOWN";
+	}
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -108,10 +137,10 @@ main (int argc, char *argv[])
 	{
 		token = lexer_next_token(&lexer);
 
-		printf("Type: %d, Text: %.*s\n",
-           token.type,
-           (int)token.length,
-           token.start);
+		printf("Type: %-18s Text: %.*s\n",
+			token_type_name(token.type),
+			(int)token.length,
+			token.start);
 	} while (token.type != TOKEN_EOF);
 
 	free(source);

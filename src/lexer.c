@@ -36,15 +36,15 @@ lexer_next_token(Lexer *lexer)
 	}
 	else if (current == '\n')
 	{
-    Token token = {0};
-    token.type = TOKEN_NEWLINE;
-    token.start = lexer->source + lexer->position;
-    token.length = 1;
+		Token token = {0};
+		token.type = TOKEN_NEWLINE;
+		token.start = lexer->source + lexer->position;
+		token.length = 1;
 
-    lexer->position++;
-    lexer->line++;
-    lexer->column = 1;
-
+		lexer->position++;
+		lexer->line++;
+		lexer->column = 1;
+	
 		return token;
 	}
 	else if (current == ',')
@@ -72,6 +72,24 @@ lexer_next_token(Lexer *lexer)
 
 		Token token = {0};
 		token.type = TOKEN_IDENTIFIER;
+		token.start = lexer->source + start;
+		token.length = lexer->position - start;
+
+		return token;
+	}
+
+	if (isdigit((unsigned char)current))
+	{
+    size_t start = lexer->position;
+
+    while (isdigit((unsigned char)current))
+    {
+        lexer->position++;
+        current = lexer->source[lexer->position];
+    }
+
+    Token token = {0};
+		token.type = TOKEN_NUMBER;
 		token.start = lexer->source + start;
 		token.length = lexer->position - start;
 
