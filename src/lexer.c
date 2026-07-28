@@ -16,11 +16,23 @@ lexer_init(Lexer *lexer,
 Token
 lexer_next_token(Lexer *lexer)
 {
-	while (lexer->source[lexer->position] == ' ' ||
-		lexer->source[lexer->position] == '\t' ||
-		lexer->source[lexer->position] == '\r')
+	for (;;)
 	{
-		lexer->position++;
+		while (lexer->source[lexer->position] == ' ' ||
+			lexer->source[lexer->position] == '\t' ||
+			lexer->source[lexer->position] == '\r')
+    {
+    	lexer->position++;
+    }
+
+    if (lexer->source[lexer->position] != ';')
+        break;
+
+    while (lexer->source[lexer->position] != '\n' &&
+    	lexer->source[lexer->position] != '\0')
+    {
+    	lexer->position++;
+    }
 	}
 
 	char current = lexer->source[lexer->position];
@@ -58,8 +70,18 @@ lexer_next_token(Lexer *lexer)
 
 		return token;
 	}
+	else if (current == ':')
+	{
+		Token token = {0};
+		token.type = TOKEN_COLON;
+		token.start = lexer->source + lexer->position;
+		token.length = 1;
 
-	if (isalpha((unsigned char)current) || current == '_')
+		lexer->position++;
+
+		return token;
+	}
+	else if (isalpha((unsigned char)current) || current == '_')
   {
 		size_t start = lexer->position;
 
@@ -77,8 +99,7 @@ lexer_next_token(Lexer *lexer)
 
 		return token;
 	}
-
-	if (isdigit((unsigned char)current))
+	else if (isdigit((unsigned char)current))
 	{
     size_t start = lexer->position;
 
